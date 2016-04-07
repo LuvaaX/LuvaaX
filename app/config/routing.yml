@@ -1,6 +1,7 @@
-app:
-    resource: "@AppBundle/Controller/"
+core:
+    resource: "@CoreBundle/Controller/"
     type:     annotation
+    prefix:   /
 
 easy_admin_bundle:
     resource: "@EasyAdminBundle/Controller/"
