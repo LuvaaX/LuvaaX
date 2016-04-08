@@ -49,7 +49,7 @@ class User implements UserInterface
     private $plainPassword;
 
     /**
-     * @var string
+     * @var \DateTime
      *
      * @ORM\Column(name="lastLogin", type="datetime")
      */
