@@ -1,0 +1,7 @@
+services:
+   luvaax.core.cache_manager:
+       class: Luvaax\CoreBundle\Manager\CacheManager
+       arguments:
+           - '@kernel'
+           - '%kernel.cache_dir%'
+           - '%filesystem%'
