@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreBundle\Entity;
+namespace Luvaax\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -9,7 +9,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * User
  *
  * @ORM\Table(name="user")
- * @ORM\Entity(repositoryClass="CoreBundle\Repository\UserRepository")
+ * @ORM\Entity(repositoryClass="Luvaax\CoreBundle\Repository\UserRepository")
  */
 class User implements UserInterface
 {
@@ -62,6 +62,12 @@ class User implements UserInterface
      */
     private $enabled;
 
+    /**
+     * @var array
+     *
+     * @ORM\Column(name="roles", type="array")
+     */
+    private $roles;
 
     /**
      * Get id
@@ -252,6 +258,21 @@ class User implements UserInterface
      */
     public function getRoles()
     {
-        return [];
+        return $this->roles;
     }
+
+    /**
+     * Set the value of Roles
+     *
+     * @param array $roles
+     *
+     * @return self
+     */
+    public function setRoles(array $roles)
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
 }

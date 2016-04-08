@@ -2,7 +2,7 @@ easy_admin:
     site_name: 'Luvaax'
     entities:
         User:
-            class: CoreBundle\Entity\User
+            class: Luvaax\CoreBundle\Entity\User
             label: 'Users'
             list:
                 title: "Most recent users"

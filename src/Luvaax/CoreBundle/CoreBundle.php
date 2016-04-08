@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreBundle;
+namespace Luvaax\CoreBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

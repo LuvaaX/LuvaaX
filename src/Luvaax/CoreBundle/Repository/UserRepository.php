@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreBundle\Repository;
+namespace Luvaax\CoreBundle\Repository;
 
 /**
  * UserRepository
