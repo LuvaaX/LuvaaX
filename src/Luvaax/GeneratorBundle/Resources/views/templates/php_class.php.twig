@@ -1,0 +1,31 @@
+<?php
+
+{% if model.namespace %}
+namespace {{ model.namespace }};
+{% endif %}
+
+{% for use_class in model.uses %}
+use {{ use_class }};
+{% endfor %}
+
+class {{ model.name }}{% if model.inheritance %} extends {{ model.inheritance }}{% endif %}{% if model.interfaces|length > 0 %} implements {{ model.interfaces|join(', ') }}{% endif %}
+{
+{% for property in model.properties %}
+    /**
+     * {{ property.description }}
+     *
+     * @var {{ property.type }}
+     {% for annotation in property.annotations %}
+     * {{ annotation }}
+     {% endfor %}
+     */
+    protected {{ property.name }};
+{% endfor %}
+
+{% for method in model.methods %}
+    public function {{ method.name }}({{ method.arguments|join(', ')}})
+    {
+{{ method.content|nl2br }}
+    }
+{% endfor %}
+}
