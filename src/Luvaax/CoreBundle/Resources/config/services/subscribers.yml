@@ -1,0 +1,7 @@
+services:
+   luvaax.core.user_subscriber:
+       class: Luvaax\CoreBundle\Subscriber\UserSubscriber
+       arguments:
+           - '@security.password_encoder'
+       tags:
+           - { name: kernel.event_subscriber }

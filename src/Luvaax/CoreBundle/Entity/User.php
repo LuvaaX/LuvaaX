@@ -3,7 +3,7 @@
 namespace Luvaax\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Luvaax\CoreBundle\Model\UserInterface;
 
 /**
  * User
@@ -51,7 +51,7 @@ class User implements UserInterface
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="lastLogin", type="datetime")
+     * @ORM\Column(name="lastLogin", type="datetime", nullable=true)
      */
     private $lastLogin;
 

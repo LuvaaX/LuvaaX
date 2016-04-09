@@ -4,7 +4,8 @@ namespace Luvaax\CoreBundle\DependencyInjection;
 
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\Routing\Loader\YamlFileLoader;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 class LuvaaxCoreExtension extends Extension
 {
@@ -12,9 +13,11 @@ class LuvaaxCoreExtension extends Extension
     {
         $loader = new YamlFileLoader(
             $container,
-            new FileLocator(__DIR__.'/../Resources/config')
+            new FileLocator(__DIR__.'/../Resources/config/services')
         );
 
         $loader->load('services.yml');
+        $loader->load('form_types.yml');
+        $loader->load('subscribers.yml');
     }
 }
