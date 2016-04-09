@@ -1,5 +1,12 @@
 services:
    luvaax.core.role_manager:
-       class: %luvaax_core.role_manager% 
+       class: %luvaax_core.role_manager%
        arguments:
-           - %security.role_hierarchy.roles%
+           - '%security.role_hierarchy.roles%'
+
+   luvaax.core.entity_generator:
+       class: Luvaax\CoreBundle\Generator\EntityGenerator
+       arguments:
+           - '@luvaax.generator.file_class'
+           - '%kernel.root_dir%'
+           - '%luvaax_core.generator.content_type%'

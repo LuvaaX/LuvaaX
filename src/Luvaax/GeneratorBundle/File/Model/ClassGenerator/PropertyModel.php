@@ -128,7 +128,7 @@ class PropertyModel
      */
     public function addAnnotation($annotation)
     {
-        $this->annotations = $annotation;
+        $this->annotations[] = $annotation;
 
         return $this;
     }

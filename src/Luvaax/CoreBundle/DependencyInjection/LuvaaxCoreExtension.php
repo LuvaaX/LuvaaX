@@ -26,6 +26,7 @@ class LuvaaxCoreExtension extends ConfigurableExtension
         $loader->load('subscribers.yml');
 
         $this->processSecurity($mergedConfig, $container);
+        $this->processGenerator($mergedConfig, $container);
     }
 
     /**
@@ -37,5 +38,16 @@ class LuvaaxCoreExtension extends ConfigurableExtension
     private function processSecurity(array $config, ContainerBuilder $container)
     {
         $container->setParameter(self::PREFIX . '.role_manager', $config['security']['role_manager']);
+    }
+
+    /**
+     * Process generator options from luvaax_core configuration
+     *
+     * @param  array            $config    Config options
+     * @param  ContainerBuilder $container Symfony's container
+     */
+    private function processGenerator(array $config, ContainerBuilder $container)
+    {
+        $container->setParameter(self::PREFIX . '.generator.content_type', $config['generator']['content_type']);
     }
 }

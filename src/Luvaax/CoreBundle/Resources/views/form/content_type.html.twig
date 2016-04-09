@@ -1,0 +1,42 @@
+{% form_theme form with easyadmin_config('design.form_theme') %}
+
+{% extends 'EasyAdminBundle:default:layout.html.twig' %}
+
+{% block content_title %}
+{% spaceless %}
+    {{ 'new.content_type'|trans({}, 'LuvaaxCore') }}
+{% endspaceless %}
+{% endblock %}
+
+{% block main %}
+    {% block entity_form %}
+        {{ form_start(form) }}
+
+        {{ form_widget(form) }}
+
+        <div class="row">
+            <div class="col-xs-12 form-actions">
+                <div class="form-group">
+                    <div id="form-actions-row">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-save"></i> {{ 'action.save'|trans({}, 'messages') }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{ form_end(form) }}
+    {% endblock entity_form %}
+{% endblock %}
+
+{% block head_stylesheets %}
+    <link rel="stylesheet" href="{{ asset('bundles/easyadmin/stylesheet/select2-bootstrap.min.css') }}">
+    {{ parent() }}
+{% endblock %}
+
+{% block body_javascript %}
+    {{ parent() }}
+
+    <script src="{{ asset('bundles/easyadmin/javascript/jquery.easyadmin-sticky.min.js') }}"></script>
+    <script src="{{ asset('bundles/easyadmin/javascript/select2.full.min.js') }}"></script>
+{% endblock %}

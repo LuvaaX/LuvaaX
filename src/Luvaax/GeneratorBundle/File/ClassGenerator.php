@@ -1,7 +1,9 @@
 <?php
 
 namespace Luvaax\GeneratorBundle\File;
+
 use Symfony\Bridge\Twig\TwigEngine;
+use Luvaax\GeneratorBundle\File\Model\ClassGenerator\ClassModel;
 
 /**
  * Permits to generate PHP class file

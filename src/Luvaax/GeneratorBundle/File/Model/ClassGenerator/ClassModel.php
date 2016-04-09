@@ -20,12 +20,17 @@ class ClassModel
     /**
      * @var string[]
      */
-    protected $uses;
+    protected $annotations = array();
 
     /**
      * @var string[]
      */
-    protected $interfaces;
+    protected $uses = array();
+
+    /**
+     * @var string[]
+     */
+    protected $interfaces = array();
 
     /**
      * @var string
@@ -35,17 +40,17 @@ class ClassModel
     /**
      * @var string[]
      */
-    protected $traits;
+    protected $traits = array();
 
     /**
      * @var PropertyModel[]
      */
-    protected $properties;
+    protected $properties = array();
 
     /**
      * @var MethodModel[]
      */
-    protected $methods;
+    protected $methods = array();
 
     /**
      * Get the value of Namespace
@@ -258,7 +263,8 @@ class ClassModel
             $setter
                 ->setName('set' . ucfirst($property->getName()))
                 ->setArguments(['$' . $property->getName()])
-                ->setContent(sprintf('      $this->%1$s=%1$s;
+                ->setContent(sprintf('        $this->%1$s = $%1$s;
+                
         return $this;', $property->getName()))
             ;
 
@@ -323,6 +329,42 @@ class ClassModel
     public function addTrait($trait)
     {
         $this->traits[] = $trait;
+        return $this;
+    }
+
+    /**
+     * Get the value of Annotations
+     *
+     * @return string[]
+     */
+    public function getAnnotations()
+    {
+        return $this->annotations;
+    }
+
+    /**
+     * Set the value of Annotations
+     *
+     * @param string[] $annotations
+     *
+     * @return self
+     */
+    public function setAnnotations(array $annotations)
+    {
+        $this->annotations = $annotations;
+
+        return $this;
+    }
+
+    /**
+     * Adds a new annotation to the class
+     *
+     * @param string $annotation
+     * @return self
+     */
+    public function addAnnotation($annotation)
+    {
+        $this->annotations[] = $annotation;
         return $this;
     }
 }

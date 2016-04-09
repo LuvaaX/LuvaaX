@@ -8,24 +8,32 @@ namespace {{ model.namespace }};
 use {{ use_class }};
 {% endfor %}
 
+{% if model.annotations|length > 0 %}
+/**
+{% for annotation in model.annotations %}
+ * {{ annotation }}
+{% endfor %}
+ */
+{% endif %}
 class {{ model.name }}{% if model.inheritance %} extends {{ model.inheritance }}{% endif %}{% if model.interfaces|length > 0 %} implements {{ model.interfaces|join(', ') }}{% endif %}
+
 {
 {% for property in model.properties %}
     /**
-     * {{ property.description }}
+     * {{ property.description }}
      *
      * @var {{ property.type }}
-     {% for annotation in property.annotations %}
-     * {{ annotation }}
-     {% endfor %}
-     */
-    protected {{ property.name }};
+{% for annotation in property.annotations %}
+     * {{ annotation|raw }}
 {% endfor %}
-
+     */
+    protected ${{ property.name }};
+{% endfor %}
 {% for method in model.methods %}
+
     public function {{ method.name }}({{ method.arguments|join(', ')}})
     {
-{{ method.content|nl2br }}
+{{ method.content|raw }}
     }
 {% endfor %}
 }
