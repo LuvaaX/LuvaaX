@@ -6,6 +6,7 @@ use Luvaax\GeneratorBundle\File\Model\ClassGenerator\ClassModel;
 use Luvaax\GeneratorBundle\File\Model\ClassGenerator\PropertyModel;
 use Luvaax\CoreBundle\Model\ContentType;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
+use Symfony\Component\Yaml\Yaml;
 
 class EntityGenerator
 {
@@ -50,13 +51,15 @@ class EntityGenerator
     {
         $content = $this->generator->buildClass($this->createModel($contentType));
 
-        $path = $this->rootDir . $this->generatorConfiguration['dest_dir'];
+        $path = $this->rootDir . '/' . trim($this->generatorConfiguration['dest_dir'], '/') . '/';
         if (!file_exists($path)) {
             throw new FileNotFoundException(sprintf('Entity\'s destination directory %s not found', $path));
         }
 
         $filePath = $path . $contentType->getName() . '.php';
         file_put_contents($filePath, $content);
+
+        $this->updateEasyAdmin($contentType);
     }
 
     /**
@@ -91,5 +94,68 @@ class EntityGenerator
         $model->addProperty($id, true, true);
 
         return $model;
+    }
+
+    /**
+     * Update easy admin bundle config to add the content type
+     *
+     * @param  ContentType $contentType
+     */
+    private function updateEasyAdmin(ContentType $contentType)
+    {
+        $classPath = $this->generatorConfiguration['namespace'] . '\\' . $contentType->getName();
+        $easyAdminConfig = $this->rootDir . '/config/bundles/easy_admin.yml';
+
+        $content = Yaml::parse(file_get_contents($easyAdminConfig));
+
+        $found = false;
+        foreach ($content['easy_admin']['entities'] as $entityName => $entityValue) {
+            if ($entityName == $contentType->getName()) {
+                $found = true;
+                break;
+            }
+        }
+
+        if (!$found) {
+            $content['easy_admin']['entities'][$contentType->getName()] = [
+                'class' => $classPath,
+                'label' => $contentType->getName()
+            ];
+        }
+
+        $found = false;
+        foreach ($content['easy_admin']['design']['menu'] as &$menuItem) {
+            if (isset($menuItem['type']) && $menuItem['type'] == 'content_type') {
+                if (!isset($menuItem['children'])) {
+                    continue;
+                }
+
+                foreach ($menuItem['children'] as $child) {
+                    if (isset($child['entity']) && $child['entity'] == $contentType->getName()) {
+                        $found = true;
+                        break;
+                    }
+                }
+
+                if (!$found) {
+                    $found = true;
+                    $menuItem['children'][] = [
+                        'entity' => $contentType->getName(),
+                        'label'  => $contentType->getName()
+                    ];
+                }
+
+                break;
+            }
+        }
+
+        if (!$found) {
+            $content['easy_admin']['design']['menu'][] = [
+                'entity' => $contentType->getName(),
+                'label'  => $contentType->getName()
+            ];
+        }
+
+        file_put_contents($easyAdminConfig, Yaml::dump($content, 10));
     }
 }
