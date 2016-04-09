@@ -1,4 +1,5 @@
 services:
-#    luvaax_generator.example:
-#        class: Luvaax\GeneratorBundle\Example
-#        arguments: ["@service_id", "plain_value", %parameter%]
+   luvaax.generator.file_class:
+       class: Luvaax\GeneratorBundle\File\ClassGenerator
+       arguments:
+           - '@templating'
