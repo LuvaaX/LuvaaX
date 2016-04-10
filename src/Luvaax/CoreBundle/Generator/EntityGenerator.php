@@ -5,6 +5,7 @@ use Luvaax\GeneratorBundle\File\ClassGenerator;
 use Luvaax\GeneratorBundle\File\Model\ClassGenerator\ClassModel;
 use Luvaax\GeneratorBundle\File\Model\ClassGenerator\PropertyModel;
 use Luvaax\CoreBundle\Model\ContentType;
+use Luvaax\CoreBundle\Model\ContentTypeField;
 use Luvaax\CoreBundle\Reader\ConfigurationReader;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 
@@ -87,6 +88,7 @@ class EntityGenerator
             ->setName($contentType->getName())
             ->setNamespace($this->generatorConfiguration['namespace'])
             ->addUse('Doctrine\ORM\Mapping as ORM')
+            ->addUse('Symfony\Component\Validator\Constraints as Assert')
             ->addAnnotation('@ORM\Table')
             ->addAnnotation('@ORM\Entity')
         ;
@@ -103,6 +105,17 @@ class EntityGenerator
         ;
 
         $model->addProperty($id, true, true);
+
+        foreach ($contentType->getFields() as $field) {
+            /** @var $field ContentTypeField */
+            $property = new PropertyModel();
+            $property
+                ->setName($field->getName())
+                ->setAnnotations($field->getAnnotations());
+            ;
+
+            $model->addProperty($property, true, true);
+        }
 
         return $model;
     }

@@ -5,9 +5,9 @@ services:
            - '%security.role_hierarchy.roles%'
 
    luvaax.core.configuration_reader:
-      class: Luvaax\CoreBundle\Reader\ConfigurationReader
-      arguments:
-         - '%kernel.root_dir%'
+       class: Luvaax\CoreBundle\Reader\ConfigurationReader
+       arguments:
+           - '%kernel.root_dir%'
 
    luvaax.core.entity_generator:
        class: Luvaax\CoreBundle\Generator\EntityGenerator
@@ -16,3 +16,8 @@ services:
            - '@luvaax.core.configuration_reader'
            - '%kernel.root_dir%'
            - '%luvaax_core.generator.content_type%'
+
+   luvaax.core.collector.field_type:
+       class: Luvaax\CoreBundle\Event\FieldTypeCollector
+       arguments:
+           - '@event_dispatcher'

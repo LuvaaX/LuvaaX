@@ -74,3 +74,6 @@ easy_admin:
                         type_options:
                             multiple: true
                             expanded: true
+        Sdsqd:
+            class: Site\DefaultBundle\Entity\Sdsqd
+            label: Sdsqd

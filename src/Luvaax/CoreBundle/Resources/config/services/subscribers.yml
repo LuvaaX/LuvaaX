@@ -5,3 +5,8 @@ services:
            - '@security.password_encoder'
        tags:
            - { name: kernel.event_subscriber }
+
+   luvaax.core.field_type_subscriber:
+       class: Luvaax\CoreBundle\Event\Listener\FieldTypeSubscriber
+       tags:
+           - { name: kernel.event_subscriber }

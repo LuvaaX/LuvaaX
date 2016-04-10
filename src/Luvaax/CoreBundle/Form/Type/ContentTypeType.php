@@ -4,6 +4,7 @@ namespace Luvaax\CoreBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ContentTypeType extends AbstractType
@@ -15,6 +16,14 @@ class ContentTypeType extends AbstractType
     {
         $builder
             ->add('name')
+            ->add('fields', CollectionType::class, [
+                'entry_type' => ContentTypeFieldType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'entry_options' => [
+                    'required' => false
+                ]
+            ])
         ;
     }
 
