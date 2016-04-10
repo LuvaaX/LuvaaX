@@ -8,5 +8,5 @@ easy_admin:
                 title: "Most recent users"
     design:
         menu:
-            # @todo Valentin Merlet : Fix translation
+            # @todo : Fix translation
             - { label: 'luvaax.menu.clear_cache', route: 'luvaax_clear_cache' }

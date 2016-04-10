@@ -7,7 +7,7 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 
 /**
- * @author Valentin Merlet (merlet.valentin@gmail.com)
+ *
  */
 class CacheManager
 {
@@ -31,6 +31,6 @@ class CacheManager
      */
     public function clearCache()
     {
-        // @todo Peekmo
+        // @todo
     }
 }
