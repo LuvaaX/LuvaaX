@@ -4,9 +4,15 @@ services:
        arguments:
            - '%security.role_hierarchy.roles%'
 
+   luvaax.core.configuration_reader:
+      class: Luvaax\CoreBundle\Reader\ConfigurationReader
+      arguments:
+         - '%kernel.root_dir%'
+
    luvaax.core.entity_generator:
        class: Luvaax\CoreBundle\Generator\EntityGenerator
        arguments:
            - '@luvaax.generator.file_class'
+           - '@luvaax.core.configuration_reader'
            - '%kernel.root_dir%'
            - '%luvaax_core.generator.content_type%'

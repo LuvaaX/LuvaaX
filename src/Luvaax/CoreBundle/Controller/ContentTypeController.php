@@ -28,6 +28,8 @@ class ContentTypeController extends Controller
         $form->handleRequest($request);
         if ($form->isValid()) {
             $this->get('luvaax.core.entity_generator')->createContentType($contentType);
+
+            return $this->redirectToRoute('easyadmin');
         }
 
         return $this->render('CoreBundle:form:content_type.html.twig', [
