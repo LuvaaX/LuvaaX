@@ -6,3 +6,7 @@ easy_admin:
             label: 'Users'
             list:
                 title: "Most recent users"
+    design:
+        menu:
+            # @todo Valentin Merlet : Fix translation
+            - { label: 'luvaax.menu.clear_cache', route: 'luvaax_clear_cache' }

@@ -3,5 +3,3 @@ services:
        class: Luvaax\CoreBundle\Manager\CacheManager
        arguments:
            - '@kernel'
-           - '%kernel.cache_dir%'
-           - '%filesystem%'
