@@ -1,6 +1,7 @@
 <?php
 
 namespace Luvaax\CoreBundle\Generator;
+
 use Luvaax\GeneratorBundle\File\ClassGenerator;
 use Luvaax\GeneratorBundle\File\Model\ClassGenerator\ClassModel;
 use Luvaax\GeneratorBundle\File\Model\ClassGenerator\PropertyModel;
@@ -138,6 +139,24 @@ class EntityGenerator
                 'class' => $classPath,
                 'label' => $contentType->getName()
             ];
+        }
+
+        // List fields
+        foreach ($contentType->getFields() as $field) {
+            /** @var $field ContentTypeField */
+            if (!$field->getShowList()) {
+                continue;
+            }
+
+            if (!isset($content['easy_admin']['entities'][$contentType->getName()]['list'])) {
+                $content['easy_admin']['entities'][$contentType->getName()]['list'] = [];
+            }
+
+            if (!isset($content['easy_admin']['entities'][$contentType->getName()]['list']['fields'])) {
+                $content['easy_admin']['entities'][$contentType->getName()]['list']['fields'] = [];
+            }
+
+            $content['easy_admin']['entities'][$contentType->getName()]['list']['fields'][] = $field->getName();
         }
 
         $found = false;
