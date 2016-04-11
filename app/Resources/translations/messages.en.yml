@@ -1,1 +1,5 @@
-luvaax.menu.clear_cache: Clear the cache
+luvaax:
+    menu:
+        clear_cache: Clear the cache
+    flash_messages:
+        success_clear_cache: Cache have been removed (%env%).

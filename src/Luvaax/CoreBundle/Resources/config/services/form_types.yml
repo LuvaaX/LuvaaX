@@ -1,0 +1,14 @@
+services:
+    luvaax.core.form.role_selector:
+        class: Luvaax\CoreBundle\Form\Type\RoleSelectorType
+        arguments:
+            - '@luvaax.core.role_manager'
+        tags:
+            - { name: form.type }
+
+    luvaax.core.form.content_type_field:
+        class: Luvaax\CoreBundle\Form\Type\ContentTypeFieldType
+        arguments:
+            - '@luvaax.core.collector.field_type'
+        tags:
+            - { name: form.type }

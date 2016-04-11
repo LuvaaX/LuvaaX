@@ -1,5 +1,0 @@
-services:
-   luvaax.core.role_manager:
-       class: Luvaax\CoreBundle\Security\RoleManager
-       arguments:
-           - %security.role_hierarchy.roles%

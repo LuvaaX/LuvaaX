@@ -1,0 +1,29 @@
+services:
+   luvaax.core.role_manager:
+       class: %luvaax_core.role_manager%
+       arguments:
+           - '%security.role_hierarchy.roles%'
+
+   luvaax.core.configuration_reader:
+       class: Luvaax\CoreBundle\Reader\ConfigurationReader
+       arguments:
+           - '%kernel.root_dir%'
+
+   luvaax.core.entity_generator:
+       class: Luvaax\CoreBundle\Generator\EntityGenerator
+       arguments:
+           - '@luvaax.generator.file_class'
+           - '@luvaax.core.configuration_reader'
+           - '%kernel.root_dir%'
+           - '%luvaax_core.generator.content_type%'
+           - '@luvaax.core.command_creator'
+
+   luvaax.core.collector.field_type:
+       class: Luvaax\CoreBundle\Event\FieldTypeCollector
+       arguments:
+           - '@event_dispatcher'
+
+   luvaax.core.command_creator:
+       class: Luvaax\CoreBundle\Helper\CommandCreator
+       arguments:
+           - '@kernel'

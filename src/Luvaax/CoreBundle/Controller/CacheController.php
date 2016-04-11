@@ -3,7 +3,7 @@
 namespace Luvaax\CoreBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  *
@@ -19,7 +19,15 @@ class CacheController extends Controller
     {
         $this->get('luvaax.core.cache_manager')->clearCache();
 
-        // @todo
-        return new Response(200);
+        $this->addFlash(
+            'success',
+            $this->get('translator')
+                 ->trans(
+                    'luvaax.flash_messages.success_clear_cache',
+                    array('%env%' => $this->get('kernel')->getEnvironment())
+                )
+            );
+
+        return new RedirectResponse($this->generateUrl('easyadmin'));
     }
 }

@@ -3,3 +3,4 @@ services:
        class: Luvaax\CoreBundle\Manager\CacheManager
        arguments:
            - '@kernel'
+           - '@luvaax.core.command_creator'
