@@ -15,7 +15,9 @@ class ContentTypeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
+            ->add('name', null, [
+                'attr' => ['placeholder' => 'Only alpha characters and spaces']
+            ])
             ->add('fields', CollectionType::class, [
                 'entry_type' => ContentTypeFieldType::class,
                 'allow_add' => true,

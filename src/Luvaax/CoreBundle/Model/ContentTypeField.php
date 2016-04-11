@@ -3,11 +3,13 @@
 namespace Luvaax\CoreBundle\Model;
 
 use Luvaax\CoreBundle\Model\FieldType;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class ContentTypeField
 {
     /**
      * @var string
+     * @Assert\Regex(pattern="/^[a-zA-Z ]+$/")
      */
     private $name;
 
@@ -28,6 +30,11 @@ class ContentTypeField
     protected $showList = false;
 
     /**
+     * @var string
+     */
+    protected $nameFormatted;
+
+    /**
      * Get the value of Name
      *
      * @return string
@@ -35,6 +42,20 @@ class ContentTypeField
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Returns the name formatted for attribute name
+     *
+     * @return string
+     */
+    public function getNameFormatted()
+    {
+        if (!$this->nameFormatted) {
+            $this->nameFormatted = implode('', explode(' ', lcfirst(ucwords(strtolower($this->name)))));
+        }
+
+        return $this->nameFormatted;
     }
 
     /**
@@ -87,7 +108,7 @@ class ContentTypeField
                 $annotations = [
                     sprintf(
                         '@ORM\Column(name="%s", type="%s", length="255" nullable=%s)',
-                        $this->name,
+                        $this->getNameFormatted(),
                         $this->fieldType->getDoctrineType(),
                         $this->required ? 'false' : 'true'
                     ),
@@ -96,7 +117,7 @@ class ContentTypeField
                 $annotations = [
                     sprintf(
                         '@ORM\Column(name="%s", type="%s", nullable=%s)',
-                        $this->name,
+                        $this->getNameFormatted(),
                         $this->fieldType->getDoctrineType(),
                         $this->required ? 'false' : 'true'
                     ),

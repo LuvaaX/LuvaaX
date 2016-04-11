@@ -78,7 +78,7 @@ class EntityGenerator
             throw new FileNotFoundException(sprintf('Entity\'s destination directory %s not found', $path));
         }
 
-        $filePath = $path . $contentType->getName() . '.php';
+        $filePath = $path . $contentType->getNameFormatted() . '.php';
         file_put_contents($filePath, $content);
 
         $this->updateEasyAdmin($contentType);
@@ -95,7 +95,7 @@ class EntityGenerator
     {
         $model = new ClassModel();
         $model
-            ->setName($contentType->getName())
+            ->setName($contentType->getNameFormatted())
             ->setNamespace($this->generatorConfiguration['namespace'])
             ->addUse('Doctrine\ORM\Mapping as ORM')
             ->addUse('Symfony\Component\Validator\Constraints as Assert')
@@ -120,7 +120,7 @@ class EntityGenerator
             /** @var $field ContentTypeField */
             $property = new PropertyModel();
             $property
-                ->setName($field->getName())
+                ->setName($field->getNameFormatted())
                 ->setAnnotations($field->getAnnotations());
             ;
 
@@ -137,14 +137,14 @@ class EntityGenerator
      */
     private function updateEasyAdmin(ContentType $contentType)
     {
-        $classPath = $this->generatorConfiguration['namespace'] . '\\' . $contentType->getName();
+        $classPath = $this->generatorConfiguration['namespace'] . '\\' . $contentType->getNameFormatted();
 
         $content = $this->configurationReader->getContent(ConfigurationReader::CONFIG_EASY_ADMIN);
 
         // Create the entry in "entities" if the entity does not exists
-        $found = $this->entityExists($contentType->getName());
+        $found = $this->entityExists($contentType->getNameFormatted());
         if (!$found) {
-            $content['easy_admin']['entities'][$contentType->getName()] = [
+            $content['easy_admin']['entities'][$contentType->getNameFormatted()] = [
                 'class' => $classPath,
                 'label' => $contentType->getName()
             ];
@@ -157,15 +157,18 @@ class EntityGenerator
                 continue;
             }
 
-            if (!isset($content['easy_admin']['entities'][$contentType->getName()]['list'])) {
-                $content['easy_admin']['entities'][$contentType->getName()]['list'] = [];
+            if (!isset($content['easy_admin']['entities'][$contentType->getNameFormatted()]['list'])) {
+                $content['easy_admin']['entities'][$contentType->getNameFormatted()]['list'] = [];
             }
 
-            if (!isset($content['easy_admin']['entities'][$contentType->getName()]['list']['fields'])) {
-                $content['easy_admin']['entities'][$contentType->getName()]['list']['fields'] = [];
+            if (!isset($content['easy_admin']['entities'][$contentType->getNameFormatted()]['list']['fields'])) {
+                $content['easy_admin']['entities'][$contentType->getNameFormatted()]['list']['fields'] = [];
             }
 
-            $content['easy_admin']['entities'][$contentType->getName()]['list']['fields'][] = $field->getName();
+            $content['easy_admin']['entities'][$contentType->getNameFormatted()]['list']['fields'][] = [
+                'label' => $field->getName(),
+                'property' => $field->getNameFormatted()
+            ];
         }
 
         $found = false;
@@ -181,7 +184,7 @@ class EntityGenerator
 
                 // Look in all children
                 foreach ($menuItem['children'] as $child) {
-                    if (isset($child['entity']) && $child['entity'] == $contentType->getName()) {
+                    if (isset($child['entity']) && $child['entity'] == $contentType->getNameFormatted()) {
                         $found = true;
                         break;
                     }
@@ -191,7 +194,7 @@ class EntityGenerator
                 if (!$found) {
                     $found = true;
                     $menuItem['children'][] = [
-                        'entity' => $contentType->getName(),
+                        'entity' => $contentType->getNameFormatted(),
                         'label'  => $contentType->getName()
                     ];
                 }
@@ -203,7 +206,7 @@ class EntityGenerator
         // Create the menu entry to the root menu if no content_type found
         if (!$found) {
             $content['easy_admin']['design']['menu'][] = [
-                'entity' => $contentType->getName(),
+                'entity' => $contentType->getNameFormatted(),
                 'label'  => $contentType->getName()
             ];
         }

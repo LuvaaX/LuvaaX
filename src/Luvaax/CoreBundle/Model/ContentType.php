@@ -4,11 +4,13 @@ namespace Luvaax\CoreBundle\Model;
 
 use Luvaax\CoreBundle\Model\FieldType;
 use Luvaax\CoreBundle\Model\ContentTypeField;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class ContentType
 {
     /**
      * @var string
+     * @Assert\Regex(pattern="/^[a-zA-Z ]+$/")
      */
     protected $name;
 
@@ -18,6 +20,11 @@ class ContentType
     protected $fields;
 
     /**
+     * @var string
+     */
+    protected $nameFormatted;
+
+    /**
      * Get the value of Name
      *
      * @return string
@@ -25,6 +32,20 @@ class ContentType
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Returns the name formatted for class name
+     *
+     * @return string
+     */
+    public function getNameFormatted()
+    {
+        if (!$this->nameFormatted) {
+            $this->nameFormatted = implode('', explode(' ', ucwords(strtolower($this->name))));
+        }
+
+        return $this->nameFormatted;
     }
 
     /**

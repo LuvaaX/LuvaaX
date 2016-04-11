@@ -40,7 +40,9 @@ class ContentTypeFieldType extends AbstractType
         }
 
         $builder
-            ->add('name')
+            ->add('name', null, [
+                'attr' => ['placeholder' => 'Only alpha characters and spaces']
+            ])
             ->add('fieldType', ChoiceType::class, [
                 'required' => true,
                 'choices' => $readableChoices
