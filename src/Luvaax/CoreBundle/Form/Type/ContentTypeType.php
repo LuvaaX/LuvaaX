@@ -16,7 +16,8 @@ class ContentTypeType extends AbstractType
     {
         $builder
             ->add('name', null, [
-                'attr' => ['placeholder' => 'Only alpha characters and spaces']
+                'attr' => ['placeholder' => 'Only alpha characters and spaces'],
+                'disabled' => $options['is_update']
             ])
             ->add('fields', CollectionType::class, [
                 'entry_type' => ContentTypeFieldType::class,
@@ -35,7 +36,8 @@ class ContentTypeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Luvaax\CoreBundle\Model\ContentType'
+            'data_class' => 'Luvaax\CoreBundle\Model\ContentType',
+            'is_update'  => false
         ]);
     }
 }

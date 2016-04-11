@@ -4,6 +4,7 @@ namespace Luvaax\CoreBundle\Event;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Luvaax\CoreBundle\Event\Event\FieldTypeEvent;
+use Luvaax\CoreBundle\Model\FieldType;
 
 class FieldTypeCollector
 {
@@ -34,5 +35,27 @@ class FieldTypeCollector
         $this->eventDispatcher->dispatch(self::EVENT_REGISTER, $event);
 
         return $event->getFieldTypes();
+    }
+
+    /**
+     * Get a field type that match the given type
+     *
+     * @param  string $type Field type (class namespace)
+     *
+     * @throws \InvalidArgumentException if type not found
+     * @return FieldType
+     */
+    public function getFieldType($type)
+    {
+        $fieldTypes = $this->getFieldTypes();
+
+        foreach ($fieldTypes as $fieldType) {
+            /** @var $fieldType FieldType */
+            if ($fieldType->getFieldType() == $type) {
+                return $fieldType;
+            }
+        }
+
+        throw new \InvalidArgumentException(sprintf('Field type %s not found', $type));
     }
 }

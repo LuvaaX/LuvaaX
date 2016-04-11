@@ -17,6 +17,7 @@ services:
            - '%kernel.root_dir%'
            - '%luvaax_core.generator.content_type%'
            - '@luvaax.core.command_creator'
+           - '@luvaax.core.collector.field_type'
 
    luvaax.core.collector.field_type:
        class: Luvaax\CoreBundle\Event\FieldTypeCollector

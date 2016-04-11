@@ -4,11 +4,14 @@ namespace Luvaax\CoreBundle\Generator;
 
 use Luvaax\GeneratorBundle\File\ClassGenerator;
 use Luvaax\GeneratorBundle\File\Model\ClassGenerator\ClassModel;
+use Luvaax\GeneratorBundle\File\Model\ClassGenerator\MethodModel;
 use Luvaax\GeneratorBundle\File\Model\ClassGenerator\PropertyModel;
+use Luvaax\CoreBundle\Model\FieldType;
 use Luvaax\CoreBundle\Model\ContentType;
 use Luvaax\CoreBundle\Model\ContentTypeField;
 use Luvaax\CoreBundle\Reader\ConfigurationReader;
 use Luvaax\CoreBundle\Helper\CommandCreator;
+use Luvaax\CoreBundle\Event\FieldTypeCollector;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 
 class EntityGenerator
@@ -41,24 +44,32 @@ class EntityGenerator
     private $commandCreator;
 
     /**
+     * @var FieldTypeCollector
+     */
+    private $fieldCollector;
+
+    /**
      * @param ClassGenerator $generator
      * @param ConfigurationReader $configurationReader
      * @param string         $rootDir
      * @param array          $generatorConfiguration
      * @param CommandCreator $commandCreator
+     * @param FieldTypeCollector $fieldCollector
      */
     public function __construct(
         ClassGenerator $generator,
         ConfigurationReader $configurationReader,
         $rootDir,
         array $generatorConfiguration,
-        CommandCreator $commandCreator
+        CommandCreator $commandCreator,
+        FieldTypeCollector $fieldCollector
     ) {
         $this->generator = $generator;
         $this->configurationReader = $configurationReader;
         $this->rootDir = $rootDir;
         $this->generatorConfiguration = $generatorConfiguration;
         $this->commandCreator = $commandCreator;
+        $this->fieldCollector = $fieldCollector;
     }
 
     /**
@@ -99,8 +110,10 @@ class EntityGenerator
             ->setNamespace($this->generatorConfiguration['namespace'])
             ->addUse('Doctrine\ORM\Mapping as ORM')
             ->addUse('Symfony\Component\Validator\Constraints as Assert')
+            ->addUse('Luvaax\CoreBundle\Model\CustomContentTypeInterface')
             ->addAnnotation('@ORM\Table')
             ->addAnnotation('@ORM\Entity')
+            ->addInterface('CustomContentTypeInterface')
         ;
 
         // Adds $id automatically
@@ -115,6 +128,15 @@ class EntityGenerator
         ;
 
         $model->addProperty($id, true, true);
+
+        $checkMethod = new MethodModel();
+        $checkMethod
+            ->setName('isAvailableForEditing')
+            ->setIsStatic(true)
+            ->setContent('      return true;')
+        ;
+
+        $model->addMethod($checkMethod);
 
         foreach ($contentType->getFields() as $field) {
             /** @var $field ContentTypeField */
@@ -153,22 +175,11 @@ class EntityGenerator
         // List fields
         foreach ($contentType->getFields() as $field) {
             /** @var $field ContentTypeField */
-            if (!$field->getShowList()) {
-                continue;
+            if ($field->getShowList()) {
+                $this->addFieldToConfig($content, 'list', $field, $contentType->getNameFormatted());
             }
 
-            if (!isset($content['easy_admin']['entities'][$contentType->getNameFormatted()]['list'])) {
-                $content['easy_admin']['entities'][$contentType->getNameFormatted()]['list'] = [];
-            }
-
-            if (!isset($content['easy_admin']['entities'][$contentType->getNameFormatted()]['list']['fields'])) {
-                $content['easy_admin']['entities'][$contentType->getNameFormatted()]['list']['fields'] = [];
-            }
-
-            $content['easy_admin']['entities'][$contentType->getNameFormatted()]['list']['fields'][] = [
-                'label' => $field->getName(),
-                'property' => $field->getNameFormatted()
-            ];
+            $this->addFieldToConfig($content, 'form', $field, $contentType->getNameFormatted());
         }
 
         $found = false;
@@ -219,6 +230,43 @@ class EntityGenerator
     }
 
     /**
+     * Adds a field to the given config
+     *
+     * @param array     $content Content to update
+     * @param string    $type    Config type ('list', 'form', 'edit', 'new')
+     * @param ContentTypeField $field   Field type
+     * @param string    $contentTypeName
+     */
+    private function addFieldToConfig(&$content, $type, ContentTypeField $field, $contentTypeName)
+    {
+        if (!isset($content['easy_admin']['entities'][$contentTypeName][$type])) {
+            $content['easy_admin']['entities'][$contentTypeName][$type] = [];
+        }
+
+        if (!isset($content['easy_admin']['entities'][$contentTypeName][$type]['fields'])) {
+            $content['easy_admin']['entities'][$contentTypeName][$type]['fields'] = [];
+        }
+
+        // Type list, no fieldType
+        if ($type == 'list') {
+            $content['easy_admin']['entities'][$contentTypeName][$type]['fields'][] = [
+                'label' => $field->getName(),
+                'property' => $field->getNameFormatted()
+            ];
+
+            return;
+        }
+
+        // Type form, new, edit..
+        $content['easy_admin']['entities'][$contentTypeName][$type]['fields'][] = [
+            'label' => $field->getName(),
+            'property' => $field->getNameFormatted(),
+            'type' => $field->getFieldType()->getFieldType(),
+            'required' => $field->getRequired()
+        ];
+    }
+
+    /**
      * Does the entity exists or not ?
      *
      * @param  string $name Entity name
@@ -236,5 +284,57 @@ class EntityGenerator
         }
 
         return false;
+    }
+
+    /**
+     * Build the content type from the given entity name
+     *
+     * @param  string $entity Entity to build
+     *
+     * @throws \InvalidArgumentException
+     * @return ContentType
+     */
+    public function getEntityContentType($entity)
+    {
+        $content = $this->configurationReader->getContent(ConfigurationReader::CONFIG_EASY_ADMIN);
+
+        if (
+            !$this->entityExists($entity) ||
+            !isset($content['easy_admin']['entities'][$entity]['form']) ||
+            !isset($content['easy_admin']['entities'][$entity]['label'])
+        ) {
+            throw new \InvalidArgumentException(sprintf('Entity %s not found', $entity));
+        }
+
+        $form = $content['easy_admin']['entities'][$entity]['form'];
+
+        $contentType = new ContentType();
+        $contentType
+            ->setName($content['easy_admin']['entities'][$entity]['label'])
+        ;
+
+        $fieldsList = [];
+        if (
+            isset($content['easy_admin']['entities'][$entity]['list']) &&
+            isset($content['easy_admin']['entities'][$entity]['list']['fields'])
+        ) {
+            foreach ($content['easy_admin']['entities'][$entity]['list']['fields'] as $listField) {
+                $fieldsList[] = $listField['property'];
+            }
+        }
+
+        foreach ($form['fields'] as $field) {
+            $contentTypeField = new ContentTypeField();
+            $contentTypeField
+                ->setName($field['label'])
+                ->setFieldType($this->fieldCollector->getFieldType($field['type']))
+                ->setRequired($field['required'])
+                ->setShowList(in_array($field['property'], $fieldsList))
+            ;
+
+            $contentType->addField($contentTypeField);
+        }
+
+        return $contentType;
     }
 }
