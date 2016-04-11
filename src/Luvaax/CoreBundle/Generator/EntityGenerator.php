@@ -8,6 +8,7 @@ use Luvaax\GeneratorBundle\File\Model\ClassGenerator\PropertyModel;
 use Luvaax\CoreBundle\Model\ContentType;
 use Luvaax\CoreBundle\Model\ContentTypeField;
 use Luvaax\CoreBundle\Reader\ConfigurationReader;
+use Luvaax\CoreBundle\Helper\CommandCreator;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 
 class EntityGenerator
@@ -35,21 +36,29 @@ class EntityGenerator
     private $configurationReader;
 
     /**
+     * @var CommandCreator
+     */
+    private $commandCreator;
+
+    /**
      * @param ClassGenerator $generator
      * @param ConfigurationReader $configurationReader
      * @param string         $rootDir
      * @param array          $generatorConfiguration
+     * @param CommandCreator $commandCreator
      */
     public function __construct(
         ClassGenerator $generator,
         ConfigurationReader $configurationReader,
         $rootDir,
-        array $generatorConfiguration
+        array $generatorConfiguration,
+        CommandCreator $commandCreator
     ) {
         $this->generator = $generator;
         $this->configurationReader = $configurationReader;
         $this->rootDir = $rootDir;
         $this->generatorConfiguration = $generatorConfiguration;
+        $this->commandCreator = $commandCreator;
     }
 
     /**
@@ -201,6 +210,9 @@ class EntityGenerator
 
         // Save it
         $this->configurationReader->saveContent(ConfigurationReader::CONFIG_EASY_ADMIN, $content);
+
+        // Update doctrine
+        $this->commandCreator->execute('doctrine:schema:update', ['--force' => true]);
     }
 
     /**
