@@ -25,7 +25,8 @@ class CacheManager
     /**
      * Constructor
      *
-     * @param AppKernel $kernel
+     * @param AppKernel      $kernel
+     * @param CommandCreator $commandCreator
      */
     public function __construct($kernel, CommandCreator $commandCreator)
     {

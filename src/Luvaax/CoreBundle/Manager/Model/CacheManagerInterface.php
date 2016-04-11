@@ -3,7 +3,7 @@
 namespace Luvaax\CoreBundle\Security\Model;
 
 /**
- * 
+ *
  */
 interface CacheManagerInterface
 {

@@ -25,7 +25,7 @@ class CacheController extends Controller
                  ->trans(
                     'luvaax.flash_messages.success_clear_cache',
                     array('%env%' => $this->get('kernel')->getEnvironment())
-                )
+                 )
             );
 
         return new RedirectResponse($this->generateUrl('easyadmin'));

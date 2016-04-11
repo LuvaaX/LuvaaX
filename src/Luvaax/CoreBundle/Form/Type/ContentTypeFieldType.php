@@ -50,17 +50,15 @@ class ContentTypeFieldType extends AbstractType
         ;
 
         $builder->get('fieldType')
-            ->addModelTransformer(new CallbackTransformer(function($originalFieldType) use ($readableChoices) {
+            ->addModelTransformer(new CallbackTransformer(function ($originalFieldType) use ($readableChoices) {
                 if ($originalFieldType) {
                     return $readableChoices[$originalFieldType->getName()];
                 }
-
-            }, function($submittedFieldType) use ($choices) {
+            }, function ($submittedFieldType) use ($choices) {
                 if ($submittedFieldType) {
                     return $choices[$submittedFieldType];
                 }
-            })
-        );
+            }));
     }
 
     /**

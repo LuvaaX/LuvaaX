@@ -1,6 +1,7 @@
 <?php
 
 namespace Luvaax\CoreBundle\Model;
+
 use Luvaax\CoreBundle\Model\ValidationConstraint;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
