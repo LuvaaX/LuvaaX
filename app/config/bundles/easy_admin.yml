@@ -19,6 +19,9 @@ easy_admin:
                 label: Users
                 icon: user
                 entity: User
+            -
+                label: 'luvaax.menu.clear_cache'
+                route: 'luvaax_clear_cache'
     entities:
         User:
             class: Luvaax\CoreBundle\Entity\User

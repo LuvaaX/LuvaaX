@@ -1,0 +1,5 @@
+luvaax:
+    menu:
+        clear_cache: Vider les caches
+    flash_messages:
+        success_clear_cache: Les caches ont été vidé avec succès (%env%).
