@@ -39,6 +39,18 @@ class CacheManager
      */
     public function clearCache()
     {
-        $this->commandCreator->execute('cache:clear', ['--env' => $this->kernel->getEnvironment()]);
+        $env = $this->kernel->getEnvironment();
+
+        $options = ['--env' => $env];
+
+        if ($env === 'prod') {
+            $options[] = ['--no-debug' => true];
+        }
+
+        $this->commandCreator->execute('cache:clear', $options);
+
+        if ($env === 'prod') {
+            $this->commandCreator->execute('cache:warmup');
+        }
     }
 }
