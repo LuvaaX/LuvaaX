@@ -24,6 +24,7 @@ class LuvaaxCoreExtension extends ConfigurableExtension
         $loader->load('services.yml');
         $loader->load('form_types.yml');
         $loader->load('subscribers.yml');
+        $loader->load('managers.yml');
 
         $this->processSecurity($mergedConfig, $container);
         $this->processGenerator($mergedConfig, $container);
