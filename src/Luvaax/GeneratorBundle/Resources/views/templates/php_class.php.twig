@@ -18,6 +18,10 @@ use {{ use_class }};
 class {{ model.name }}{% if model.inheritance %} extends {{ model.inheritance }}{% endif %}{% if model.interfaces|length > 0 %} implements {{ model.interfaces|join(', ') }}{% endif %}
 
 {
+{% for trait in model.traits %}
+    use {{ trait }};
+{% endfor %}
+
 {% for property in model.properties %}
     /**
      * {{ property.description }}

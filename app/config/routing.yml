@@ -11,3 +11,7 @@ easy_admin_bundle:
     resource: "@EasyAdminBundle/Controller/"
     type:     annotation
     prefix:   /admin
+
+umanit_tree:
+    resource: "@UmanitTreeBundle/Resources/config/routing.yml"
+    prefix:   /
