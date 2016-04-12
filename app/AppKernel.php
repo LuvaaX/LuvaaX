@@ -18,7 +18,8 @@ class AppKernel extends Kernel
             new JavierEguiluz\Bundle\EasyAdminBundle\EasyAdminBundle(),
             new Site\DefaultBundle\DefaultBundle(),
             new Luvaax\CoreBundle\CoreBundle(),
-            new Luvaax\GeneratorBundle\LuvaaxGeneratorBundle(),
+            new JMS\I18nRoutingBundle\JMSI18nRoutingBundle(),
+            new Luvaax\GeneratorBundle\LuvaaxGeneratorBundle()
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
