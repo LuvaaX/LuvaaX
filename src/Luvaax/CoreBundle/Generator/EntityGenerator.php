@@ -111,9 +111,17 @@ class EntityGenerator
             ->addUse('Doctrine\ORM\Mapping as ORM')
             ->addUse('Symfony\Component\Validator\Constraints as Assert')
             ->addUse('Luvaax\CoreBundle\Model\CustomContentTypeInterface')
+            ->addUse('Umanit\Bundle\TreeBundle\Model\TreeNodeInterface')
+            ->addUse('Umanit\Bundle\TreeBundle\Model\TreeNodeTrait')
+            ->addUse('Umanit\Bundle\TreeBundle\Model\SeoTrait')
+            ->addUse('Umanit\Bundle\TreeBundle\Model\SeoInterface')
             ->addAnnotation('@ORM\Table')
             ->addAnnotation('@ORM\Entity')
+            ->addTrait('SeoTrait')
+            ->addTrait('TreeNodeTrait')
             ->addInterface('CustomContentTypeInterface')
+            ->addInterface('SeoInterface')
+            ->addInterface('TreeNodeInterface')
         ;
 
         // Adds $id automatically
@@ -137,6 +145,14 @@ class EntityGenerator
         ;
 
         $model->addMethod($checkMethod);
+
+        $treeNodeMethod = new MethodModel();
+        $treeNodeMethod
+            ->setName('getTreeNodeName')
+            ->setContent('      return $this->' . ContentType::TITLE_FIELD . ';')
+        ;
+
+        $model->addMethod($treeNodeMethod);
 
         foreach ($contentType->getFields() as $field) {
             /** @var $field ContentTypeField */

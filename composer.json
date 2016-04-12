@@ -1,6 +1,6 @@
 {
-    "name": "aanceau/valcms",
-    "license": "proprietary",
+    "name": "luvaax/luvaax-cms",
+    "license": "mit",
     "type": "project",
     "autoload": {
         "psr-4": {
@@ -16,6 +16,12 @@
             "Tests\\": "tests/"
         }
     },
+    "repositories": [
+        {
+            "url": "https://github.com/umanit/tree-bundle.git",
+            "type": "git"
+        }
+    ],
     "require": {
         "php": ">=5.5.9",
         "symfony/symfony": "3.0.*",
@@ -28,7 +34,8 @@
         "sensio/framework-extra-bundle": "^3.0.2",
         "incenteev/composer-parameter-handler": "^2.0",
         "javiereguiluz/easyadmin-bundle": "^1.12",
-        "jms/i18n-routing-bundle": "^2.0"
+        "jms/i18n-routing-bundle": "^2.0",
+        "umanit/tree-bundle": "dev-master"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

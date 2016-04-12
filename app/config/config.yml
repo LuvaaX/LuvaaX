@@ -2,6 +2,7 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
+    - { resource: bundles/doctrine_extension.yml }
     - { resource: bundles/easy_admin.yml }
     - { resource: 'bundles/jmsi18n_routing.yml' }
     - { resource: "@LuvaaxCoreBundle/Resources/config/services/services.yml" }

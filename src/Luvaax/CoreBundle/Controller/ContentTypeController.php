@@ -5,9 +5,11 @@ namespace Luvaax\CoreBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Luvaax\CoreBundle\Form\Type\ContentTypeType;
 use Luvaax\CoreBundle\Model\ContentType;
+use Luvaax\CoreBundle\Model\ContentTypeField;
 use Luvaax\CoreBundle\Reader\ConfigurationReader;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
@@ -24,6 +26,22 @@ class ContentTypeController extends Controller
     public function newAction(Request $request)
     {
         $contentType = new ContentType();
+
+        // Title is the default field
+        $contentTypeField = new ContentTypeField();
+        $contentTypeField
+            ->setFieldType($this
+                ->container
+                ->get('luvaax.core.collector.field_type')
+                ->getFieldType(TextType::class)
+            )
+            ->setRequired(true)
+            ->setName(ContentType::TITLE_FIELD)
+            ->setShowList(true)
+        ;
+
+        $contentType->addField($contentTypeField);
+
         $form = $this->createForm(ContentTypeType::class, $contentType);
 
         $form->handleRequest($request);

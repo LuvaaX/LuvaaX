@@ -19,7 +19,9 @@ class AppKernel extends Kernel
             new Site\DefaultBundle\DefaultBundle(),
             new Luvaax\CoreBundle\LuvaaxCoreBundle(),
             new JMS\I18nRoutingBundle\JMSI18nRoutingBundle(),
-            new Luvaax\GeneratorBundle\LuvaaxGeneratorBundle()
+            new Luvaax\GeneratorBundle\LuvaaxGeneratorBundle(),
+            new Umanit\Bundle\TreeBundle\UmanitTreeBundle(),
+            new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

@@ -8,6 +8,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class ContentType
 {
+    const TITLE_FIELD = 'title';
+    
     /**
      * @var string
      * @Assert\Regex(pattern="/^[a-zA-Z ]+$/")
