@@ -20,8 +20,13 @@ easy_admin:
                 icon: user
                 entity: User
             -
+                label: Development
+            -
                 label: 'luvaax.menu.clear_cache'
                 route: 'luvaax_clear_cache'
+                icon: eraser
+        templates:
+            list: 'CoreBundle:admin:list.html.twig'
     entities:
         User:
             class: Luvaax\CoreBundle\Entity\User
