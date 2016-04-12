@@ -17,7 +17,7 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new JavierEguiluz\Bundle\EasyAdminBundle\EasyAdminBundle(),
             new Site\DefaultBundle\DefaultBundle(),
-            new Luvaax\CoreBundle\CoreBundle(),
+            new Luvaax\CoreBundle\LuvaaxCoreBundle(),
             new JMS\I18nRoutingBundle\JMSI18nRoutingBundle(),
             new Luvaax\GeneratorBundle\LuvaaxGeneratorBundle()
         ];

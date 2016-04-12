@@ -1,10 +1,10 @@
 luvaax_core:
-    resource: "@CoreBundle/Controller/"
+    resource: "@LuvaaxCoreBundle/Controller/"
     type:     annotation
     prefix:   /
 
 luvaax_:
-    resource: "@CoreBundle/Resources/config/routing.yml"
+    resource: "@LuvaaxCoreBundle/Resources/config/routing.yml"
     prefix:   /
 
 easy_admin_bundle:

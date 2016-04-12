@@ -5,7 +5,7 @@ namespace Luvaax\CoreBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Luvaax\CoreBundle\DependencyInjection\LuvaaxCoreExtension;
 
-class CoreBundle extends Bundle
+class LuvaaxCoreBundle extends Bundle
 {
     /**
      * {@inheritdoc}

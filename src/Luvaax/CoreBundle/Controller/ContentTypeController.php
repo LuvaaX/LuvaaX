@@ -33,7 +33,7 @@ class ContentTypeController extends Controller
             return $this->redirectToRoute('easyadmin');
         }
 
-        return $this->render('CoreBundle:form:content_type.html.twig', [
+        return $this->render('LuvaaxCoreBundle:form:content_type.html.twig', [
             'form' => $form->createView()
         ]);
     }
@@ -62,7 +62,7 @@ class ContentTypeController extends Controller
             ]);
         }
 
-        return $this->render('CoreBundle:form:content_type.html.twig', [
+        return $this->render('LuvaaxCoreBundle:form:content_type.html.twig', [
             'form' => $form->createView()
         ]);
     }
