@@ -1,8 +1,84 @@
 easy_admin:
-    site_name: 'Luvaax'
+    site_name: Luvaax
+    design:
+        menu:
+            -
+                label: Content
+            -
+                label: 'Content Types'
+                icon: folder
+                type: content_type
+                children:
+                    -
+                        label: 'Add content type'
+                        route: luvaax.new_content_type
+                        icon: plus
+            -
+                label: Security
+            -
+                label: Users
+                icon: user
+                entity: User
+            -
+                label: Development
+            -
+                label: 'luvaax.menu.clear_cache'
+                route: 'luvaax_clear_cache'
+                icon: eraser
+        templates:
+            list: 'CoreBundle:admin:list.html.twig'
     entities:
         User:
             class: Luvaax\CoreBundle\Entity\User
-            label: 'Users'
+            label: Users
             list:
-                title: "Most recent users"
+                title: 'Most recent users'
+            new:
+                fields:
+                    - username
+                    - email
+                    -
+                        property: plainPassword
+                        type: repeated
+                        type_options:
+                            required: true
+                            type: Symfony\Component\Form\Extension\Core\Type\PasswordType
+                            first_options:
+                                label: Password
+                            second_options:
+                                label: 'Repeat password'
+                    -
+                        property: enabled
+                        label: Enabled
+                        type_options:
+                            data: true
+                    -
+                        property: roles
+                        label: Roles
+                        type: Luvaax\CoreBundle\Form\Type\RoleSelectorType
+                        type_options:
+                            multiple: true
+                            expanded: true
+            edit:
+                fields:
+                    - username
+                    - email
+                    -
+                        property: plainPassword
+                        type: repeated
+                        type_options:
+                            type: Symfony\Component\Form\Extension\Core\Type\PasswordType
+                            first_options:
+                                label: Password
+                            second_options:
+                                label: 'Repeat password'
+                    -
+                        property: enabled
+                        label: Enabled
+                    -
+                        property: roles
+                        label: Roles
+                        type: Luvaax\CoreBundle\Form\Type\RoleSelectorType
+                        type_options:
+                            multiple: true
+                            expanded: true

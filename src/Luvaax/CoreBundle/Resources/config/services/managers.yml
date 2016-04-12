@@ -1,0 +1,6 @@
+services:
+   luvaax.core.cache_manager:
+       class: Luvaax\CoreBundle\Manager\CacheManager
+       arguments:
+           - '@kernel'
+           - '@luvaax.core.command_creator'

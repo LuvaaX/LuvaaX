@@ -1,0 +1,5 @@
+services:
+   luvaax.generator.file_class:
+       class: Luvaax\GeneratorBundle\File\ClassGenerator
+       arguments:
+           - '@templating'

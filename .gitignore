@@ -14,3 +14,5 @@
 !var/SymfonyRequirements.php
 /vendor/
 /web/bundles/
+src/Site/DefaultBundle/Entity/*
+!src/Site/DefaultBundle/Entity/.gitkeep

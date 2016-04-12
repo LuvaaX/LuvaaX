@@ -27,6 +27,11 @@ class RoleManager implements RoleManagerInterface
      */
     public function getRoles()
     {
-        return $this->roles;
+        $roles = [];
+        foreach ($this->roles as $role => $subroles) {
+            $roles[$role] = $role;
+        }
+
+        return $roles;
     }
 }
