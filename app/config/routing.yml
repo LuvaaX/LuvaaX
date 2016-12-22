@@ -1,10 +1,16 @@
+luvaax_theme:
+    resource: "@LuvaaxThemeBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 luvaax_core:
     resource: "@LuvaaxCoreBundle/Controller/"
     type:     annotation
     prefix:   /
 
-luvaax_:
-    resource: "@LuvaaxCoreBundle/Resources/config/routing.yml"
+luvaax_theme:
+    resource: "@LuvaaxThemeBundle/Controller/"
+    type:     annotation
     prefix:   /
 
 easy_admin_bundle:

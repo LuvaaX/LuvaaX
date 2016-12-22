@@ -1,3 +1,0 @@
-luvaax_clear_cache:
-    path:     /cache/clear
-    defaults: { _controller: LuvaaxCoreBundle:Cache:clear }

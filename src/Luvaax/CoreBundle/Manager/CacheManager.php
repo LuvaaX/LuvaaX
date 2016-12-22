@@ -50,7 +50,7 @@ class CacheManager
         $this->commandCreator->execute('cache:clear', $options);
 
         if ($env === 'prod') {
-            $this->commandCreator->execute('cache:warmup');
+            $this->commandCreator->execute('cache:warmup', $options);
         }
     }
 }

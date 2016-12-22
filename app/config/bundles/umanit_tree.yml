@@ -1,0 +1,6 @@
+umanit_tree:
+    seo:
+        default_title: 'Luvaax'
+        default_description: 'Symfony3 CMS'
+        default_keywords: 'luvaax, symfony3, cms, php'
+        translation_domain: 'messages'
